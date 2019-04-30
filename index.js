@@ -44,5 +44,14 @@ server.post('/api/dishes/', async (req, res) => {
   res.status(500).json(error);
  }
 });
+server.post('/api/recipes/', async (req, res) => {
+ try {
+  const { name, dishes_id } = req.body;
+  const dish = await db_dishes.addRecipe({ name, dishes_id });
+  res.status(200).json(dish);
+ } catch (error) {
+  res.status(500).json(error);
+ }
+});
 
 server.listen(5000, () => console.log('App is running on port 5000'));
