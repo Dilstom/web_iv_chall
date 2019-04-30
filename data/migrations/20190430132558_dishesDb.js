@@ -25,12 +25,14 @@ exports.up = function(knex, Promise) {
   .createTable('ingredients', function(tbl) {
    tbl.increments();
    tbl.string('name', 128).notNullable();
-   tbl.float('amount').notNullable();
+   tbl.string('amount').notNullable();
    tbl
     .integer('recipes_id')
     .unsigned()
     .references('id')
-    .inTable('recipes');
+    .inTable('recipes')
+    .onDelete('CASCADE')
+    .onUpdate('CASCADE');
   })
   .createTable('instructions', function(tbl) {
    tbl.increments();
@@ -40,14 +42,16 @@ exports.up = function(knex, Promise) {
     .integer('recipe_id')
     .unsigned()
     .references('id')
-    .inTable('recipes');
+    .inTable('recipes')
+    .onDelete('CASCADE')
+    .onUpdate('CASCADE');
   });
 };
 
 exports.down = function(knex, Promise) {
- return knex.chema
-  .dropTableIFExists('dishes')
-  .dropTableIFExists('recipes')
-  .dropTableIFExists('ingredients')
-  .dropTableIFExists('instructions');
+ return knex.schema
+  .dropTableIfExists('dishes')
+  .dropTableIfExists('recipes')
+  .dropTableIfExists('ingredients')
+  .dropTableIfExists('instructions');
 };
